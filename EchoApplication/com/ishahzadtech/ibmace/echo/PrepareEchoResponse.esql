@@ -1,0 +1,20 @@
+BROKER SCHEMA com.ishahzadtech.ibmace.echo
+
+
+DECLARE DEFAULT_MESSAGE BLOB CAST('[Empty]' AS BLOB CCSID 1208);
+
+CREATE COMPUTE MODULE PrepareEchoResponse
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET OutputRoot.Properties = InputProperties;
+		SET OutputRoot.BLOB.BLOB = getEchoMessage();
+		RETURN TRUE;
+	END;
+	
+	CREATE FUNCTION getEchoMessage() RETURNS BLOB
+	BEGIN
+		DECLARE inputBlob BLOB InputRoot.BLOB.BLOB;
+		DECLARE echoMessage CHARACTER 'Welcome to ACE Docker: ';
+		RETURN CAST(echoMessage AS BLOB CCSID 1208) || COALESCE(inputBlob, DEFAULT_MESSAGE);
+	END;
+END MODULE;
