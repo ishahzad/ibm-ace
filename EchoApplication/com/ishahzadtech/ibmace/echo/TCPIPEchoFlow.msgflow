@@ -15,7 +15,7 @@
       <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="306,91" computeExpression="esql://routine/com.ishahzadtech.ibmace.echo#PrepareEchoResponse.Main">
         <translation xmi:type="utility:ConstantString" string="Prepare Echo Response"/>
       </nodes>
-      <nodes xmi:type="ComIbmTCPIPServerOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="582,96" connectionDetails="1234" timeoutSendingData="30" recordDefinition="delimited">
+      <nodes xmi:type="ComIbmTCPIPServerOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="582,96" connectionDetails="1234" timeoutSendingData="30">
         <translation xmi:type="utility:ConstantString" string="TCPIP Server Output"/>
       </nodes>
       <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
