@@ -1,0 +1,12 @@
+BROKER SCHEMA com.ishahzadtech.ace.logging
+
+
+CREATE FUNCTION logEnabled(IN loggerName CHARACTER, IN logLevel CHARACTER)
+RETURNS BOOLEAN
+LANGUAGE JAVA
+EXTERNAL NAME "com.ishahzadtech.ace.logging.LogHandler.logEnabled";
+
+
+CREATE FUNCTION logMessage(IN loggerName CHARACTER, IN logLevel CHARACTER, IN message CHARACTER)
+LANGUAGE JAVA
+EXTERNAL NAME "com.ishahzadtech.ace.logging.LogHandler.log";

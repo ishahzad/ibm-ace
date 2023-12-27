@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ComIbmTrace.msgnode="ComIbmTrace.msgnode" xmlns:ComIbmWSInput.msgnode="ComIbmWSInput.msgnode" xmlns:ComIbmWSReply.msgnode="ComIbmWSReply.msgnode" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="MessageLoggingFlow.msgflow" nsPrefix="MessageLoggingFlow.msgflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1" nodeLayoutStyle="RECTANGLE">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.filePath" name="filePath" defaultValueLiteral="C:\Development\ACE\IntegrationServer\ACEDEMO\logging-demo.log">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <translation xmi:type="utility:TranslatableString" key="MessageLoggingFlow" bundleName="MessageLoggingFlow" pluginId="LoggingDemoApp"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/LoggingDemoApp/icons/full/obj16/MessageLoggingFlow.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/LoggingDemoApp/icons/full/obj30/MessageLoggingFlow.gif"/>
+    <composition>
+      <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="57,191" URLSpecifier="/logging-demo" parseQueryString="true" messageDomainProperty="BLOB" faultFormat="JSON">
+        <translation xmi:type="utility:ConstantString" string="HTTP Input"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="569,187" computeExpression="esql://routine/#PrepareResponseModule.Main">
+        <translation xmi:type="utility:ConstantString" string="Prepare Response"/>
+      </nodes>
+      <nodes xmi:type="ComIbmTrace.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="324,187" destination="file" filePath="C:\Development\ACE\IntegrationServer\ACEDEMO\Messages.log" pattern="&#xD;&#xA;---- Request Received at ${CURRENT_TIMESTAMP} -------&#xD;&#xA;Application Name: ${ApplicationLabel}&#xD;&#xA;MessageFlow Name: ${MessageFlowLabel}&#xD;&#xA;Message Received: ${CAST(Root.BLOB.BLOB AS CHARACTER CCSID 1208)}&#xD;&#xA;">
+        <translation xmi:type="utility:ConstantString" string="Log Request"/>
+      </nodes>
+      <nodes xmi:type="ComIbmWSReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_6" location="815,188">
+        <translation xmi:type="utility:ConstantString" string="HTTP Reply"/>
+      </nodes>
+      <nodes xmi:type="ComIbmTrace.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_7" location="328,282" destination="file" filePath="C:\Development\ACE\IntegrationServer\ACEDEMO\Messages.log" pattern="&#xD;&#xA;------ Error Occured at ${CURRENT_TIMESTAMP} ---------------&#xD;&#xA;Application Name: ${ApplicationLabel}&#xD;&#xA;MessageFlow Name: ${MessageFlowLabel}&#xD;&#xA;Exception List: ${ExceptionList}">
+        <translation xmi:type="utility:ConstantString" string="Log Exception"/>
+      </nodes>
+      <nodes xmi:type="ComIbmTrace.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="1051,192" destination="file" pattern="&#xD;&#xA;---- Response Sent at ${CURRENT_TIMESTAMP} -------&#xD;&#xA;Application Name: ${ApplicationLabel}&#xD;&#xA;MessageFlow Name: ${MessageFlowLabel}&#xD;&#xA;Message Sent: ${CAST(ASBITSTREAM(Root.JSON.Data) AS CHARACTER CCSID 1208)}&#xD;&#xA;">
+        <translation xmi:type="utility:ConstantString" string="Log Response"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_3" targetNode="FCMComposite_1_5" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_4" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_5" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_6" targetNode="FCMComposite_1_6" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_9" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_7" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_10" targetNode="FCMComposite_1_7" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.catch" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_6" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+    </composition>
+    <propertyOrganizer>
+      <propertyDescriptor groupName="Group.Basic" configurable="true" describedAttribute="Property.filePath">
+        <propertyName xmi:type="utility:TranslatableString" key="Property.filePath" bundleName="ComIbmTrace" pluginId="com.ibm.etools.mft.ibmnodes.definitions"/>
+      </propertyDescriptor>
+    </propertyOrganizer>
+    <attributeLinks promotedAttribute="Property.filePath" overriddenNodes="FCMComposite_1_7 FCMComposite_1_5 FCMComposite_1_2">
+      <overriddenAttribute href="ComIbmTrace.msgnode#Property.filePath"/>
+    </attributeLinks>
+    <stickyBoard/>
+  </eClassifiers>
+</ecore:EPackage>

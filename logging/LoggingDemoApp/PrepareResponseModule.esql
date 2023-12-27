@@ -1,0 +1,28 @@
+
+PATH com.ishahzadtech.ace.logging;
+
+CREATE COMPUTE MODULE PrepareResponseModule
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		CALL logBLOB('Request Message Received for Logging', InputRoot.BLOB.BLOB);
+		
+		DECLARE exceptionRef REFERENCE TO InputExceptionList.[1];
+		DECLARE queryStrRef REFERENCE TO InputLocalEnvironment.HTTP.Input.QueryString;
+		SET OutputRoot.HTTPReplyHeader."Content-Type" = 'application/json';
+		
+		IF LASTMOVE(exceptionRef) THEN
+			SET OutputRoot.HTTPReplyHeader."X-Original-HTTP-Status-Code" = 500;
+			SET OutputRoot.JSON.Data.ResponseMessage = 'Error occured while logging the message';
+			SET OutputRoot.JSON.Data.Exception = exceptionRef;
+			
+		ELSEIF CAST(COALESCE(UPPER(queryStrRef.error), 'FALSE') AS BOOLEAN) THEN
+			THROW USER EXCEPTION MESSAGE 2951 VALUES('Demonstrating Error') ;
+			
+		ELSE
+			SET OutputRoot.HTTPReplyHeader."X-Original-HTTP-Status-Code" = 200;
+			SET OutputRoot.JSON.Data.ResponseMessage = 'Message received and logged successully';
+		END IF;
+		
+		RETURN TRUE;
+	END;
+END MODULE;

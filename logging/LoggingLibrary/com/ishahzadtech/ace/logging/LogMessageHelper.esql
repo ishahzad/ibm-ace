@@ -1,0 +1,71 @@
+BROKER SCHEMA com.ishahzadtech.ace.logging
+
+
+DECLARE LOG_OFFSET CONSTANT INTEGER 63;
+DECLARE CR CONSTANT CHAR CAST(CAST(X'0A' AS BLOB) AS CHAR CCSID 819);
+DECLARE CR_HEX CONSTANT BLOB X'0D';
+DECLARE NEW_SPACED_LINE CONSTANT CHARACTER (CR || SPACE(LOG_OFFSET));
+
+DECLARE loggerName EXTERNAL CONSTANT CHARACTER 'default';
+
+
+CREATE FUNCTION logDebugMessage(IN message CHARACTER)
+BEGIN
+	CALL logMessage(loggerName, 'DEBUG', getNodeFullName(MessageFlowLabel) || ' ' || COALESCE(message, ''));
+END;
+
+
+CREATE FUNCTION logInfoMessage(IN message CHARACTER)
+BEGIN
+	CALL logMessage(loggerName, 'INFO', getNodeFullName(MessageFlowLabel) || ' ' || COALESCE(message, ''));
+END;
+
+
+CREATE FUNCTION logWarningMessage(IN message CHARACTER)
+BEGIN
+	CALL logMessage(loggerName, 'WARN', getNodeFullName(MessageFlowLabel) || ' ' || COALESCE(message, ''));
+END;
+
+
+CREATE FUNCTION logErrorMessage(IN message CHARACTER)
+BEGIN
+	CALL logMessage(loggerName, 'ERROR', getNodeFullName(MessageFlowLabel) || ' ' || COALESCE(message, ''));
+END;
+
+
+CREATE FUNCTION logTraceMessage(IN message CHARACTER)
+BEGIN
+	CALL logMessage(loggerName, 'TRACE', getNodeFullName(MessageFlowLabel) || ' ' || COALESCE(message, ''));
+END;
+
+
+CREATE FUNCTION  logDebugEnabled() RETURNS BOOLEAN
+BEGIN
+	RETURN logEnabled(loggerName, 'DEBUG');
+END;	
+
+
+CREATE FUNCTION logBLOB(IN message CHARACTER, IN blobValue BLOB)
+BEGIN
+	SET message = getNodeFullName(MessageFlowLabel) || ' ' || COALESCE(message, '')  || ' ' || getBlobBitStream(blobValue);
+	CALL logMessage(loggerName, 'INFO', message);
+END;
+
+
+CREATE FUNCTION getNodeFullName(flowName CHARACTER) RETURNS CHARACTER
+BEGIN
+	IF CONTAINS(flowName, '.') THEN
+		DECLARE location INTEGER POSITION('.' IN flowName REPEAT -1);	
+		SET flowName = SUBSTRING(flowName FROM (location + 1));
+	END IF; 
+	
+	SET flowName =  '[' || flowName || '.' || NodeLabel || ']';	
+	RETURN flowName;
+END;
+
+	
+CREATE FUNCTION getBlobBitStream(IN blobValue BLOB) RETURNS CHARACTER
+BEGIN
+	RETURN COALESCE(CAST(blobValue AS CHARACTER CCSID 1208), 'Cannot parse blob data');
+END;
+

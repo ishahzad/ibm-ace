@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<MessagePool xmlns="http://wwww.ibm.com/iib/test/1.0.0">
+    <InputMessage timestamp="1703681351925" nodeId="FCMComposite_1_1" name="TestMessage" id="1703681351925-6">
+        <plainText>Welcome+to+ACE+logging</plainText>
+    </InputMessage>
+</MessagePool>
